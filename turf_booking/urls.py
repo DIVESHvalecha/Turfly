@@ -27,4 +27,5 @@ urlpatterns = [
     path('usrs/', include(('usrs.urls', 'usrs'), namespace='usrs')),
     path('owner/', include(('owner.urls', 'owner'), namespace='owner')),  # <-- Add namespace here
     path('accounts/', include('allauth.urls')),
+    path('players/', include(('players.urls', 'players'), namespace='players')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

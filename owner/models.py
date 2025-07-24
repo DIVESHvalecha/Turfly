@@ -11,6 +11,8 @@ class Turf(models.Model):
     image = models.ImageField(upload_to='turf_images/', blank=True, null=True)
     amenities = models.CharField(max_length=255, blank=True, help_text='Comma-separated list of amenities')
     price_per_hour = models.DecimalField(max_digits=8, decimal_places=2)
+    rating = models.FloatField(default=0, help_text='Average rating from 0 to 5')
+    available_time_slots = models.CharField(max_length=255, blank=True, help_text="Comma-separated list of available time slots, e.g. '09:00-10:00,10:00-11:00'")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

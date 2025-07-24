@@ -1,0 +1,139 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Turf Details & Booking - {{ turf.name|default:"Turfly" }}{% endblock %}
+
+{% block content %}
+    {# Outer container for the page content. Removed redundant classes from layout.html's body. #}
+    <div
+      class="relative flex size-full flex-col dark group/design-root overflow-x-hidden"
+      style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'
+    >
+        {# Header specific to this page. Note: This will appear below your main navbar.html #}
+        
+
+        {# Main content area: Turf Details and Booking Form #}
+        <div class="px-6 sm:px-10 lg:px-20 flex flex-1 justify-center py-5"> {# Increased horizontal padding for wider screens #}
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                {# Turf Image Display #}
+                {% if turf.image %}
+                <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+                    <img src="{{ turf.image.url }}" alt="{{ turf.name }} image" class="w-full h-auto object-cover max-h-96">
+                </div>
+                {% endif %}
+
+                <div class="flex flex-wrap justify-between gap-3 p-4">
+                    <p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Turf Details</p>
+                </div>
+
+                {# Display Turf Details #}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+                    {# Turf Name #}
+                    <div>
+                        <p class="text-gray-300 text-base font-medium leading-normal pb-1">Turf Name</p>
+                        <p class="text-white text-lg font-semibold leading-normal">{{ turf.name|default:"N/A" }}</p>
+                    </div>
+
+                    {# Location #}
+                    <div>
+                        <p class="text-gray-300 text-base font-medium leading-normal pb-1">Location</p>
+                        <p class="text-white text-lg font-semibold leading-normal">{{ turf.location|default:"N/A" }}</p>
+                    </div>
+
+                    {# Amenities Provided #}
+                    <div>
+                        <p class="text-gray-300 text-base font-medium leading-normal pb-1">Amenities</p>
+                        <p class="text-white text-lg font-semibold leading-normal">{{ turf.amenities|default:"None specified" }}</p>
+                    </div>
+
+                    {# Pricing (Hourly/Slot-Based) #}
+                    <div>
+                        <p class="text-gray-300 text-base font-medium leading-normal pb-1">Pricing</p>
+                        <p class="text-white text-lg font-semibold leading-normal">{{ turf.pricing|default:"Contact for pricing" }}</p>
+                    </div>
+
+                    {# Available Hours #}
+                    <div>
+                        <p class="text-gray-300 text-base font-medium leading-normal pb-1">Available Hours</p>
+                        <p class="text-white text-lg font-semibold leading-normal">{{ turf.available_hours|default:"Not specified" }}</p>
+                    </div>
+
+                    {# Description #}
+                    <div class="md:col-span-2"> {# Takes full width on medium screens and up #}
+                        <p class="text-gray-300 text-base font-medium leading-normal pb-1">Description</p>
+                        <p class="text-white text-lg font-semibold leading-normal">{{ turf.description|default:"No description available." }}</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-between gap-3 p-4 mt-8">
+                    <p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Book This Turf</p>
+                </div>
+
+                {# Booking Form (Conceptual) #}
+                <form method="POST" action="#" class="space-y-6 px-4 py-3">
+                    {% csrf_token %}
+
+                    {# Display messages (e.g., booking success/failure) #}
+                    {% if messages %}
+                        <ul class="mb-4">
+                            {% for message in messages %}
+                                <li {% if message.tags %} class="p-3 rounded-md mb-2 {% if 'success' in message.tags %}bg-green-600 text-white{% elif 'error' in message.tags %}bg-red-600 text-white{% else %}bg-blue-600 text-white{% endif %}"{% endif %}>
+                                    {{ message }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {# Booking Form Fields (replace with your actual form fields from BookingForm) #}
+                    <div>
+                        <label for="id_date" class="block text-sm font-medium text-gray-300 mb-1">Select Date</label>
+                        <input type="date" name="date" id="id_date" required value="{{ selected_date }}"
+                               class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-[#293238] focus:border-none h-14 placeholder:text-[#9daeb8] p-4 text-base font-normal leading-normal"
+                               onchange="this.form.submit()">
+                        {# Display form errors if any #}
+                        {% comment %}
+                        {% if booking_form.date.errors %}
+                            <p class="mt-1 text-sm text-red-400">{% for error in booking_form.date.errors %}{{ error }}{% endfor %}</p>
+                        {% endif %}
+                        {% endcomment %}
+                    </div>
+
+                    <div>
+                        <label for="id_time_slot" class="block text-sm font-medium text-gray-300 mb-1">Select Time Slot</label>
+                        <select name="time_slot" id="id_time_slot" required
+                                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-[#293238] focus:border-none h-14 placeholder:text-[#9daeb8] p-4 text-base font-normal leading-normal appearance-none pr-10"
+                                style="background-image: var(--select-button-svg);">
+                            <option value="">Choose a time slot</option>
+                            {% for slot in available_slots %}
+                            <option value="{{ slot }}">{{ slot }}</option>
+                            {% empty %}
+                            <option disabled>No slots available for this date</option>
+                            {% endfor %}
+                        </select>
+                        {# Display form errors if any #}
+                        {% comment %}
+                        {% if booking_form.time_slot.errors %}
+                            <p class="mt-1 text-sm text-red-400">{% for error in booking_form.time_slot.errors %}{{ error }}{% endfor %}</p>
+                        {% endif %}
+                        {% endcomment %}
+                    </div>
+                    {# Add more booking-specific fields here if needed from your BookingForm #}
+
+                    {# Submit Button #}
+                    <div class="flex py-3">
+                        <button
+                            type="submit"
+                            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 flex-1 bg-[#1993e5] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1993e5] transition duration-200"
+                        >
+                            <span class="truncate">Book Turf</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_script %}
+    {# Any page-specific JavaScript for calendar/time slot selection can go here #}
+{% endblock %}

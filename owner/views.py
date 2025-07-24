@@ -21,7 +21,7 @@ def dashboard(request):
 class TurfForm(forms.ModelForm):
     class Meta:
         model = Turf
-        fields = ['name', 'location', 'description', 'image', 'amenities', 'price_per_hour']
+        fields = ['name', 'location', 'description', 'image', 'amenities', 'price_per_hour', 'available_time_slots']
 
 @login_required
 def add_turf(request):

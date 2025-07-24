@@ -10,7 +10,8 @@ def landing(request):
 def role_redirect(request):
     user = request.user
     if getattr(user, 'user_type', None) == 'owner':
-        return redirect('owner:owner_dashboard')  # Replace with your owner's dashboard URL name
+        return redirect('owner:owner_dashboard')
+    elif getattr(user, 'user_type', None) == 'player':
+        return redirect('players:player_home')
     else:
-        return render(request, 'landing.html')  # Temporary fallback
-        # return redirect('booking:page')  # Replace with your booking page URL name
+        return render(request, 'landing.html')

@@ -1,43 +1,92 @@
 {% extends 'layout.html' %}
 {% load widget_tweaks %}
+
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-lg">
-    <h2 class="text-2xl font-bold mb-6 text-green-700 text-center">Add New Turf</h2>
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-2">Turf Name</label>
-        {{ form.name|add_class:'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400' }}
-        {% if form.name.errors %}<p class="text-red-500 text-sm">{{ form.name.errors.0 }}</p>{% endif %}
+<div class="relative flex size-full min-h-screen flex-col bg-[#111518] dark group/design-root overflow-x-hidden" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+  <div class="layout-container flex h-full grow flex-col">
+ 
+
+    <div class="flex flex-1 justify-center items-start py-8">
+      <div class="w-full max-w-[600px] px-6">
+        <div class="text-center mb-8">
+          <p class="text-white text-[32px] font-bold">Add New Turf</p>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+          {% csrf_token %}
+          
+          <div class="w-full">
+            <label class="flex flex-col">
+              <p class="text-white font-medium pb-2">Turf Name</p>
+              {{ form.name|add_class:"form-input bg-[#293238] text-white rounded-xl h-14 px-4 w-full placeholder:text-[#9daeb8]" }}
+              {% if form.name.errors %}<p class="text-red-400 text-sm mt-1">{{ form.name.errors.0 }}</p>{% endif %}
+            </label>
+          </div>
+          
+          <div class="w-full">
+            <label class="flex flex-col">
+              <p class="text-white font-medium pb-2">Location</p>
+              {{ form.location|add_class:"form-input bg-[#293238] text-white rounded-xl h-14 px-4 w-full placeholder:text-[#9daeb8]" }}
+              {% if form.location.errors %}<p class="text-red-400 text-sm mt-1">{{ form.location.errors.0 }}</p>{% endif %}
+            </label>
+          </div>
+          
+          <div class="w-full">
+            <label class="flex flex-col">
+              <p class="text-white font-medium pb-2">Amenities Provided</p>
+              {{ form.amenities|add_class:"form-input bg-[#293238] text-white rounded-xl min-h-[120px] px-4 py-3 w-full placeholder:text-[#9daeb8] resize-none" }}
+              {% if form.amenities.errors %}<p class="text-red-400 text-sm mt-1">{{ form.amenities.errors.0 }}</p>{% endif %}
+            </label>
+          </div>
+          
+          <div class="w-full">
+            <label class="flex flex-col">
+              <p class="text-white font-medium pb-2">Pricing (Hourly/Slot-Based)</p>
+              {{ form.price_per_hour|add_class:"form-input bg-[#293238] text-white rounded-xl h-14 px-4 w-full placeholder:text-[#9daeb8]" }}
+              {% if form.price_per_hour.errors %}<p class="text-red-400 text-sm mt-1">{{ form.price_per_hour.errors.0 }}</p>{% endif %}
+            </label>
+          </div>
+          
+          <div class="w-full">
+            <label class="flex flex-col">
+              <p class="text-white font-medium pb-2">Available Hours</p>
+              <input type="text" placeholder="e.g., 6 AM - 10 PM" class="form-input bg-[#293238] text-white rounded-xl h-14 px-4 w-full placeholder:text-[#9daeb8]">
+            </label>
+          </div>
+          
+          <div class="w-full">
+            <label class="flex flex-col">
+              <p class="text-white font-medium pb-2">Available Time Slots</p>
+              {{ form.available_time_slots|add_class:"form-input bg-[#293238] text-white rounded-xl h-14 px-4 w-full placeholder:text-[#9daeb8]" }}
+              <span class="text-gray-400 text-xs mt-1">Comma-separated, e.g. 09:00-10:00,10:00-11:00</span>
+              {% if form.available_time_slots.errors %}<p class="text-red-400 text-sm mt-1">{{ form.available_time_slots.errors.0 }}</p>{% endif %}
+            </label>
+          </div>
+          
+          <div class="w-full">
+            <label class="flex flex-col">
+              <p class="text-white font-medium pb-2">Description</p>
+              {{ form.description|add_class:"form-input bg-[#293238] text-white rounded-xl min-h-[120px] px-4 py-3 w-full placeholder:text-[#9daeb8] resize-none" }}
+              {% if form.description.errors %}<p class="text-red-400 text-sm mt-1">{{ form.description.errors.0 }}</p>{% endif %}
+            </label>
+          </div>
+          
+          <div class="w-full">
+            <label class="flex flex-col">
+              <p class="text-white font-medium pb-2">Image</p>
+              {{ form.image|add_class:"form-input bg-[#293238] text-white rounded-xl h-14 px-4 w-full placeholder:text-[#9daeb8]" }}
+              {% if form.image.errors %}<p class="text-red-400 text-sm mt-1">{{ form.image.errors.0 }}</p>{% endif %}
+            </label>
+          </div>
+          
+          <div class="w-full pt-4">
+            <button type="submit" class="w-full bg-[#1993e5] text-white py-3 rounded-full text-sm font-bold hover:bg-[#1580cc] transition-colors">
+              Add Turf
+            </button>
+          </div>
+        </form>
       </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-2">Location</label>
-        {{ form.location|add_class:'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400' }}
-        {% if form.location.errors %}<p class="text-red-500 text-sm">{{ form.location.errors.0 }}</p>{% endif %}
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-2">Description</label>
-        {{ form.description|add_class:'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400' }}
-        {% if form.description.errors %}<p class="text-red-500 text-sm">{{ form.description.errors.0 }}</p>{% endif %}
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-2">Image</label>
-        {{ form.image|add_class:'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400' }}
-        {% if form.image.errors %}<p class="text-red-500 text-sm">{{ form.image.errors.0 }}</p>{% endif %}
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 mb-2">Amenities (comma separated)</label>
-        {{ form.amenities|add_class:'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400' }}
-        {% if form.amenities.errors %}<p class="text-red-500 text-sm">{{ form.amenities.errors.0 }}</p>{% endif %}
-      </div>
-      <div class="mb-6">
-        <label class="block text-gray-700 mb-2">Price per Hour (₹)</label>
-        {{ form.price_per_hour|add_class:'w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400' }}
-        {% if form.price_per_hour.errors %}<p class="text-red-500 text-sm">{{ form.price_per_hour.errors.0 }}</p>{% endif %}
-      </div>
-      <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">Add Turf</button>
-    </form>
+    </div>
   </div>
 </div>
-{% endblock %} 
+{% endblock %}

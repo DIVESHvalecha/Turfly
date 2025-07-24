@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'widget_tweaks',
     'owner',
+    'players',
 ]
 
 AUTH_USER_MODEL = 'usrs.User'

@@ -1,0 +1,123 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Book a Turf - Turfly{% endblock %}
+
+{% block content %}
+    <div
+      class="relative flex size-full flex-col dark group/design-root overflow-x-hidden"
+      style='--select-button-svg: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724px%27 height=%2724px%27 fill=%27rgb(157,174,184)%27 viewBox=%270 0 256 256%27%3e%3cpath d=%27M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z%27%3e%3c/path%3e%3c/svg%3e"); font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'
+    >
+        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
+            {# Left Column: Filters #}
+            <div class="layout-content-container flex flex-col w-80">
+                <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Filters</h2>
+                <form method="get" class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                    <label class="flex flex-col min-w-40 flex-1">
+                        <input type="text" name="location" placeholder="Location" value="{{ selected_location }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#3c4a53] bg-[#1c2226] focus:border-[#3c4a53] h-14 placeholder:text-[#9daeb8] p-[15px] text-base font-normal leading-normal" />
+                    </label>
+                    <label class="flex flex-col min-w-40 flex-1">
+                        <input type="number" name="min_price" placeholder="Min Price" value="{{ selected_min_price }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#3c4a53] bg-[#1c2226] focus:border-[#3c4a53] h-14 placeholder:text-[#9daeb8] p-[15px] text-base font-normal leading-normal" />
+                    </label>
+                    <label class="flex flex-col min-w-40 flex-1">
+                        <input type="number" name="max_price" placeholder="Max Price" value="{{ selected_max_price }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#3c4a53] bg-[#1c2226] focus:border-[#3c4a53] h-14 placeholder:text-[#9daeb8] p-[15px] text-base font-normal leading-normal" />
+                    </label>
+                    <label class="flex flex-col min-w-40 flex-1">
+                        <input type="text" name="amenities" placeholder="Amenities (comma separated)" value="{{ selected_amenities }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#3c4a53] bg-[#1c2226] focus:border-[#3c4a53] h-14 placeholder:text-[#9daeb8] p-[15px] text-base font-normal leading-normal" />
+                    </label>
+                    <label class="flex flex-col min-w-40 flex-1">
+                        <input type="date" name="date" value="{{ selected_date }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border border-[#3c4a53] bg-[#1c2226] focus:border-[#3c4a53] h-14 placeholder:text-[#9daeb8] p-[15px] text-base font-normal leading-normal" />
+                    </label>
+                    <label class="flex flex-col min-w-40 flex-1">
+                        <span class="text-white mb-1">Price Range (₹)</span>
+                        <div class="flex items-center gap-2">
+                            <input type="range" name="price_min" min="0" max="10000" step="100" value="{{ selected_min_price|default:0 }}" class="w-24" oninput="this.nextElementSibling.value = this.value">
+                            <output class="text-white">{{ selected_min_price|default:0 }}</output>
+                            <span class="text-white">to</span>
+                            <input type="range" name="price_max" min="0" max="10000" step="100" value="{{ selected_max_price|default:10000 }}" class="w-24" oninput="this.nextElementSibling.value = this.value">
+                            <output class="text-white">{{ selected_max_price|default:10000 }}</output>
+                        </div>
+                    </label>
+                    <label class="flex flex-col min-w-40 flex-1">
+                        <span class="text-white mb-1">Minimum Rating</span>
+                        <div class="flex items-center gap-2">
+                            <input type="range" name="min_rating" min="0" max="5" step="0.1" value="{{ selected_min_rating|default:0 }}" class="w-32" oninput="this.nextElementSibling.value = this.value">
+                            <output class="text-white">{{ selected_min_rating|default:0 }}</output>
+                        </div>
+                    </label>
+                    <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 flex-1 bg-[#1993e5] text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                        <span class="truncate">Apply Filters</span>
+                    </button>
+                </form>
+                {# Remove the static Price Range and Minimum Rating sliders below, as the functional ones are now in the form #}
+            </div>
+            {# Right Column: Calendar and Turf Listings #}
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Book a Turf</p></div>
+                <div class="flex flex-wrap items-center justify-center gap-6 p-4">
+                    {# Calendar Component #}
+                    <div class="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5 bg-gray-800 p-4 rounded-lg shadow-md"> {# Added styling for the calendar container #}
+                        <div class="flex items-center p-1 justify-between">
+                            <button>
+                                <div class="text-white flex size-10 items-center justify-center" data-icon="CaretLeft" data-size="18px" data-weight="regular">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                                        <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                            <p class="text-white text-base font-bold leading-tight flex-1 text-center">{{ current_month }} {{ current_year }}</p>
+                            <button>
+                                <div class="text-white flex size-10 items-center justify-center" data-icon="CaretRight" data-size="18px" data-weight="regular">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
+                                        <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+                                    </svg>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-7">
+                            <!-- Calendar days here (static or dynamic) -->
+                        </div>
+                    </div>
+                </div>
+                <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Available Turfs</h2>
+                <div class="p-4">
+                    {% for turf in turfs %}
+                    <div class="flex items-stretch justify-between gap-4 rounded-xl mb-6 bg-gray-800 p-4 shadow-md">
+                        <div class="flex flex-[2_2_0px] flex-col gap-4">
+                            <div class="flex flex-col gap-1">
+                                <p class="text-white text-base font-bold leading-tight">{{ turf.name }}</p>
+                                <p class="text-[#9daeb8] text-sm font-normal leading-normal">{{ turf.location }}</p>
+                            </div>
+                            <a href="{% url 'players:turf_detail' turf.id %}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 flex-row-reverse bg-[#293238] text-white text-sm font-medium leading-normal w-fit hover:bg-gray-700 transition duration-200">
+                                <span class="truncate">View Details</span>
+                            </a>
+                        </div>
+                        {% if turf.image %}
+                            <div
+                                class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1"
+                                style="background-image: url('{{ turf.image.url }}');"
+                            ></div>
+                        {% else %}
+                            <div
+                                class="w-full bg-gray-200 flex items-center justify-center aspect-video rounded-xl flex-1 text-gray-400"
+                            >
+                                No Image
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <div class="text-gray-400 text-center py-8">No turfs available matching your criteria.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_script %}
+    {# You might put any page-specific JavaScript here for filters, calendar, etc. #}
+    <script>
+        // Example for dynamically updating the month/year if you implement it purely client-side
+        // Or for handling filter submissions without full page reloads.
+    </script>
+{% endblock %}
