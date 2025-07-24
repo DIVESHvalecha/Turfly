@@ -25,6 +25,6 @@ urlpatterns = [
     path('', landing, name='landing'),
     path('admin/', admin.site.urls),
     path('usrs/', include(('usrs.urls', 'usrs'), namespace='usrs')),
-    path('owner/', include('owner.urls')),
-    path('accounts/', include('allauth.urls')),  # <-- Add this line at root level
+    path('owner/', include(('owner.urls', 'owner'), namespace='owner')),  # <-- Add namespace here
+    path('accounts/', include('allauth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

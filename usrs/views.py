@@ -9,7 +9,7 @@ def landing(request):
 @login_required
 def role_redirect(request):
     user = request.user
-    if hasattr(user, 'is_owner') and user.is_owner:
+    if getattr(user, 'user_type', None) == 'owner':
         return redirect('owner:owner_dashboard')  # Replace with your owner's dashboard URL name
     else:
         return render(request, 'landing.html')  # Temporary fallback

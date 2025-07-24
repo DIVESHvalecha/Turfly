@@ -1,109 +1,122 @@
 {% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Turf Manager Dashboard{% endblock %}
+
 {% block content %}
-<div class="flex min-h-screen bg-gray-100">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow-md flex flex-col p-6">
-    <h2 class="text-2xl font-bold mb-8 text-green-600">Turf Manager</h2>
-    <nav class="flex-1">
-      <ul class="space-y-4">
-        <li><a href="#" class="flex items-center text-green-600 font-semibold"><span class="mr-2">🏠</span>Dashboard</a></li>
-        <li><a href="{% url 'add_turf' %}" class="flex items-center text-gray-700 hover:text-green-600"><span class="mr-2">⚽</span>Turfs</a></li>
-        <li><a href="#" class="flex items-center text-gray-700 hover:text-green-600"><span class="mr-2">📅</span>Bookings</a></li>
-        <li><a href="#" class="flex items-center text-gray-700 hover:text-green-600"><span class="mr-2">💳</span>Payments</a></li>
-        <li><a href="#" class="flex items-center text-gray-700 hover:text-green-600"><span class="mr-2">⚙️</span>Settings</a></li>
-      </ul>
-    </nav>
-    <button class="mt-8 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700">Toggle Light/Dark</button>
-  </aside>
+    
+    <div class="flex min-h-screen-minus-navbar-footer"> {# We need to ensure the flex container correctly fills available space, adjusting for navbar/footer height if they are present. For now, assuming it fills the remaining screen. #}
 
-  <!-- Main Content -->
-  <main class="flex-1 p-8">
-    <h1 class="text-3xl font-bold mb-6">Dashboard</h1>
-    <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white p-6 rounded shadow flex flex-col items-center">
-        <span class="text-gray-500">Total Turfs</span>
-        <span class="text-2xl font-bold text-green-600">{{ turfs|length }}</span>
-      </div>
-      <div class="bg-white p-6 rounded shadow flex flex-col items-center">
-        <span class="text-gray-500">Active Bookings</span>
-        <span class="text-2xl font-bold text-green-600">{{ bookings|length }}</span>
-      </div>
-      <div class="bg-white p-6 rounded shadow flex flex-col items-center">
-        <span class="text-gray-500">Revenue (This Month)</span>
-        <span class="text-2xl font-bold text-green-600">₹{{ revenue|default:'0' }}</span>
-      </div>
-    </div>
+        <aside class="w-64 bg-gray-800 p-6 flex flex-col justify-between">
+            <div>
+                <div class="text-xl font-semibold mb-8 text-gray-500">Turf Manager</div>
+                <div class="text-sm text-gray-400 mb-10">Owner</div>
 
-    <!-- My Turfs Section -->
-    <div class="mb-8">
-      <h2 class="text-xl font-semibold mb-4">My Turfs</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for turf in turfs %}
-        <div class="bg-white rounded shadow p-4 flex flex-col items-center">
-          {% if turf.image %}
-            <img src="{{ turf.image.url }}" alt="{{ turf.name }}" class="w-full h-32 object-cover rounded mb-2">
-          {% else %}
-            <div class="w-full h-32 bg-gray-200 flex items-center justify-center rounded mb-2 text-gray-400">No Image</div>
-          {% endif %}
-          <h3 class="text-lg font-bold text-green-700 mb-1">{{ turf.name }}</h3>
-          <p class="text-gray-600 text-sm mb-1">{{ turf.location }}</p>
-          <p class="text-gray-500 text-xs mb-2">₹{{ turf.price_per_hour }} / hour</p>
-          <p class="text-gray-500 text-xs mb-2">Amenities: {{ turf.amenities }}</p>
-          <p class="text-gray-400 text-xs">{{ turf.description|truncatechars:60 }}</p>
-        </div>
-        {% empty %}
-        <div class="col-span-full text-center text-gray-500">You have not added any turfs yet.</div>
-        {% endfor %}
-      </div>
+                <nav>
+                    <ul>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center p-3 rounded-lg bg-gray-700 text-white font-medium">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001 1h2a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h2a1 1 0 001-1V9M5 20h14"></path></svg>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition duration-200">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                                Bookings
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition duration-200">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2m3-2h4m-4 0h4m8-6a2 2 0 11-4 0 2 2 0 014 0zm0 0v-2m0-6V7a4 4 0 00-4-4H7a4 4 0 00-4 4v2m3-2h4m-4 0h4"></path></svg>
+                                Turfs
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition duration-200">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-4a2 2 0 012-2h2a2 2 0 012 2v4M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                Reports
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition duration-200">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                Settings
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <a href="#" class="flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition duration-200">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                Log Out
+            </a>
+        </aside>
+
+        <main class="flex-1 p-8 overflow-y-auto">
+            <h1 class="text-3xl font-bold mb-2">Dashboard</h1>
+            <p class="text-gray-400 mb-8">Overview of your turf management activities</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h3 class="text-gray-400 text-sm uppercase tracking-wide mb-2">Total Bookings</h3>
+                    <p class="text-3xl font-bold text-white">{{ total_bookings|default:"0" }}</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h3 class="text-gray-400 text-sm uppercase tracking-wide mb-2">Upcoming Bookings</h3>
+                    <p class="text-3xl font-bold text-white">{{ upcoming_bookings|default:"0" }}</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h3 class="text-gray-400 text-sm uppercase tracking-wide mb-2">Revenue Generated</h3>
+                    <p class="text-3xl font-bold text-white">${{ revenue_generated|default:"0" }}</p>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">Quick Actions</h2>
+                <div class="flex space-x-4">
+                    <a href="{% url 'owner:add_turf' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">Add New Turf</a>
+                    <a href="#" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">View Turf Details</a>
+                    <a href="#" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">View Reports</a>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-xl font-semibold mb-4">My Turfs</h2>
+                <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-700">
+                        <thead class="bg-gray-700">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Turf Name</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Location</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            {% for turf in turfs %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ turf.name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{{ turf.location }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    {% if turf.status == 'Available' %}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-800 text-green-200">Available</span>
+                                    {% elif turf.status == 'Booked' %}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-800 text-red-200">Booked</span>
+                                    {% else %}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-600 text-gray-300">{{ turf.status }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 text-center">No turfs available.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
-    <!-- Upcoming Bookings Table -->
-    <div class="bg-white rounded shadow p-6">
-      <h2 class="text-xl font-semibold mb-4">Upcoming Bookings</h2>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead>
-            <tr>
-              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Turf</th>
-              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
-              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
-              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-              <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            {% for booking in bookings %}
-            <tr>
-              <td class="px-4 py-2">{{ booking.turf.name }}</td>
-              <td class="px-4 py-2">{{ booking.date }} {{ booking.start_time }} - {{ booking.end_time }}</td>
-              <td class="px-4 py-2">{{ booking.user.name }}</td>
-              <td class="px-4 py-2">
-                {% if booking.status == 'confirmed' %}
-                  <span class="text-green-600 font-semibold">Confirmed</span>
-                {% elif booking.status == 'pending' %}
-                  <span class="text-yellow-600 font-semibold">Pending</span>
-                {% elif booking.status == 'cancelled' %}
-                  <span class="text-red-600 font-semibold">Cancelled</span>
-                {% else %}
-                  <span class="text-gray-600 font-semibold">{{ booking.status|capfirst }}</span>
-                {% endif %}
-              </td>
-              <td class="px-4 py-2">
-                <a href="#" class="text-blue-600 hover:underline">View</a>
-                {% if booking.status == 'pending' %}
-                  | <a href="#" class="text-green-600 hover:underline">Approve</a>
-                {% endif %}
-              </td>
-            </tr>
-            {% empty %}
-            <tr>
-              <td colspan="5" class="px-4 py-2 text-center text-gray-500">No upcoming bookings.</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
-</div>
-{% endblock %}
+{% endblock content %}

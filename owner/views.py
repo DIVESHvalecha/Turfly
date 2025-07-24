@@ -34,7 +34,7 @@ def add_turf(request):
             turf.owner = request.user
             turf.save()
             messages.success(request, 'Turf added successfully!')
-            return redirect('owner_dashboard')
+            return redirect('owner:owner_dashboard')  # <-- Use namespaced name here
     else:
         form = TurfForm()
     return render(request, 'owner/add_turf.html', {'form': form})
