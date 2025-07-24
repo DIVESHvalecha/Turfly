@@ -4,45 +4,28 @@
 {% block title %}Welcome to Turfly{% endblock %}
 
 {% block content %}
-<!-- Hero Section with Background -->
-<div class="relative h-screen w-full overflow-hidden">
-    <!-- Background Image -->
-    <div class="absolute inset-0 z-0">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2RqwMCDVKab-y3p5QQ31zJIqjgeald8Sp8Pm2rX301-wM3ptgCohRz9msdhQ8n3hHGmhYFKcXpiykHdDU8UbUfj9YEZKqQcD0kiKvUSTpLtER4UQl9UDU13qZoIvJeqdCRX8fC99LhfNfbBayTRewR7yQrA9JgMlL33EeIBNp2sQTXIkluuUkB4RU54_woYhNou0kCERH52bXJvjWdi2o2nN5H8K76p377KkH64uLHo5f3mZS0BoHIAxMUKYPsRMAew82uGCufQ" alt="Turf Background" class="w-full h-full object-cover brightness-75">
-        <!-- Optional: darker overlay -->
-        <div class="absolute inset-0 bg-black/60"></div>
-    </div>
-
-    <!-- Content on top of background -->
-    <div class="relative z-10 flex flex-col justify-center items-center text-center h-full px-6">
-        <h1 class="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
-            Book Your Turf, Anytime, Anywhere
-        </h1>
-        <p class="mt-4 text-lg md:text-xl text-gray-200 max-w-2xl">
-            Turfly makes it easy to find and reserve sports turfs near you. Real-time availability, secure bookings, and more.
-        </p>
-        <a href="#" class="mt-8 inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
-            Get Started
+<main class="flex justify-center px-6 py-10 flex-1">
+        <div class="max-w-[960px] w-full">
+          <div class="p-4 rounded-xl min-h-[480px] bg-cover bg-center bg-no-repeat flex flex-col items-center justify-center gap-6" style="background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuD2RqwMCDVKab-y3p5QQ31zJIqjgeald8Sp8Pm2rX301-wM3ptgCohRz9msdhQ8n3hHGmhYFKcXpiykHdDU8UbUfj9YEZKqQcD0kiKvUSTpLtER4UQl9UDU13qZoIvJeqdCRX8fC99LhfNfbBayTRewR7yQrA9JgMlL33EeIBNp2sQTXIkluuUkB4RU54_woYhNou0kCERH52bXJvjWdi2o2nN5H8K76p377KkH64uLHo5f3mZS0BoHIAxMUKYPsRMAew82uGCufQ');">
+            <div class="text-center space-y-2">
+              <h1 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">Welcome to Turfly</h1>
+              <p class="text-sm md:text-base font-normal">Find and book the perfect turf for your next game or manage your turf bookings with ease.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3">
+              <a href="#">
+          <button class="h-12 px-5 rounded-full bg-[#1993e5] hover:bg-[#1380cb] text-white font-bold text-sm md:text-base transition">Sign Up as a User</button>
         </a>
-    </div>
-</div>
+        <a href="#">
+          <button class="h-12 px-5 rounded-full bg-[#293238] hover:bg-[#3a464d] text-white font-bold text-sm md:text-base transition">Sign Up as a Turf Owner</button>
+        </a>
+            </div>
+            <div class="mt-4">
+        <a href="{% url 'account_login' %}">
+          <button class="h-12 px-6 rounded-full bg-white hover:bg-gray-200 text-[#293238] font-bold text-sm md:text-base transition shadow">Login</button>
+        </a>
+      </div>
+          </div>
+        </div>
+      </main>
 
-<!-- Feature Section -->
-<section class="bg-gray-900 py-16 px-6 text-center">
-    <h2 class="text-3xl font-bold text-white mb-8">Why Choose Turfly?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto text-gray-300">
-        <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition duration-300">
-            <h3 class="text-xl font-semibold mb-3 text-white">Real-Time Booking</h3>
-            <p>See available slots and confirm your turf instantly — no calls needed.</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition duration-300">
-            <h3 class="text-xl font-semibold mb-3 text-white">Secure Payments</h3>
-            <p>Book confidently with fast and secure online payments via Razorpay.</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition duration-300">
-            <h3 class="text-xl font-semibold mb-3 text-white">Multiple Locations</h3>
-            <p>Choose from a wide range of top-rated sports turfs across cities.</p>
-        </div>
-    </div>
-</section>
 {% endblock %}
