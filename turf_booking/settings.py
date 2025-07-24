@@ -145,10 +145,15 @@ STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static') ]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 # Redirect after login/logout
-# LOGIN_REDIRECT_URL = 'usrs/'
+LOGIN_REDIRECT_URL = 'usrs:role_redirect'  # Use a named URL for redirect
 ACCOUNT_LOGOUT_REDIRECT_URL = 'usrs/accounts/login/'
+
+ACCOUNT_FORMS = {
+    'signup': 'usrs.forms.CustomSignupForm',
+}

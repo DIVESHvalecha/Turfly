@@ -3,7 +3,8 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include
+from . import views
 
 urlpatterns = [
-    path('accounts/', include('allauth.urls')),
+    path('role-redirect/', views.role_redirect, name='role_redirect'),
 ]

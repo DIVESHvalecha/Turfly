@@ -24,6 +24,7 @@ from usrs.views import landing
 urlpatterns = [
     path('', landing, name='landing'),
     path('admin/', admin.site.urls),
-    path('usrs/', include('usrs.urls')),
+    path('usrs/', include(('usrs.urls', 'usrs'), namespace='usrs')),
     path('owner/', include('owner.urls')),
+    path('accounts/', include('allauth.urls')),  # <-- Add this line at root level
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
