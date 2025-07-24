@@ -153,7 +153,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 # Redirect after login/logout
 LOGIN_REDIRECT_URL = 'usrs:role_redirect'  # Use a named URL for redirect
-ACCOUNT_LOGOUT_REDIRECT_URL = 'usrs/accounts/login/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 
 ACCOUNT_FORMS = {
     'signup': 'usrs.forms.CustomSignupForm',

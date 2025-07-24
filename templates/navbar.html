@@ -1,15 +1,42 @@
-<header class="flex items-center justify-between border-b border-[#293238] px-10 py-3">
-        <div class="flex items-center gap-4">
-          <div class="w-4 h-4">
-            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" fill="currentColor"></path>
-            </svg>
-          </div>
-          <h2 class="text-lg font-bold tracking-tight">Turfly by Innov8</h2>
-        </div>
-        <nav class="flex gap-9">
-          <a href="#" class="text-sm font-medium">Home</a>
-          <a href="#" class="text-sm font-medium">About</a>
-          <a href="#" class="text-sm font-medium">Contact</a>
-        </nav>
-      </header>
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#293238] px-10 py-3">
+            <div class="flex items-center gap-4 text-white">
+                <div class="size-4">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor"></path>
+                    </svg>
+                </div>
+                <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Turfly</h2>
+            </div>
+            <div class="flex flex-1 justify-end gap-8">
+                <div class="flex items-center gap-9">
+                    <a class="text-white text-sm font-medium leading-normal hover:text-blue-400 transition" href="/">Home</a>
+                    {% if user.is_authenticated and user.user_type == 'player' %}
+                    <a class="text-white text-sm font-medium leading-normal hover:text-blue-400 transition" href="{% url 'players:my_bookings' %}">My Bookings</a>
+                    {% endif %}
+                    <a class="text-white text-sm font-medium leading-normal hover:text-blue-400 transition" href="{% url 'usrs:role_redirect' %}">Profile</a>
+                </div>
+                <div class="flex gap-2">
+                    <form method="post" action="{% url 'account_logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#293238] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-700 transition duration-200"
+                        >
+                            <span class="truncate">Log Out</span>
+                        </button>
+                    </form>
+                    <a href="#" class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 bg-[#293238] text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 hover:bg-gray-700 transition duration-200">
+                        <div class="text-white" data-icon="Bell" data-size="20px" data-weight="regular">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                                <path
+                                    d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"
+                                ></path>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <div
+                    class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBowzkol9xrsQTTRkhbFm0ISqxjhocV74WNqI9E9_ue1ffhsWKb0l1NM9YSolPM76jj0eIDaEZjVBj09HyvTd51I4mYw6fVfNe_tX-jb23CPz9XlAcPksS8hUhcoPM-pRtHRCGCzbUcQlsR3Je1KwBkOm1tqWxw-aFbZlGSdrpKtUiuhqErTwv7ok7FABa3-khIVjT01-bgHugagA0A_JZAJDleh_XAPFZqY7voHK08lDPuEHMSOCGcC07jz7kle9meaYbEXomCZA");'
+                ></div>
+            </div>
+        </header>

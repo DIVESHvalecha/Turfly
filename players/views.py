@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from owner.models import Turf, Booking
 from django.db.models import Q
-from datetime import date, time
+from datetime import date, time, datetime
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Player homepage view
 
@@ -61,9 +63,20 @@ def normalize_slot(slot):
     except Exception:
         return slot.strip()
 
+def parse_time_flexible(tstr):
+    tstr = tstr.strip()
+    try:
+        return time.fromisoformat(tstr)
+    except Exception:
+        # Try to add leading zero if missing
+        if len(tstr.split(':')[0]) == 1:
+            tstr = '0' + tstr
+            return time.fromisoformat(tstr)
+        raise
+
 def turf_detail(request, turf_id):
     turf = get_object_or_404(Turf, id=turf_id)
-    selected_date = request.GET.get('date') or date.today().isoformat()
+    selected_date = request.GET.get('date') or request.POST.get('date') or date.today().isoformat()
     # Parse available time slots
     all_slots = [slot.strip() for slot in (turf.available_time_slots or '').split(',') if slot.strip()]
     # Normalize all slots for comparison
@@ -73,8 +86,44 @@ def turf_detail(request, turf_id):
     booked_slots = [f"{s.strftime('%-H:%M')}-{e.strftime('%-H:%M')}" for s, e in booked]
     # Filter out booked slots
     available_slots = [slot for slot, norm_slot in zip(all_slots, normalized_all_slots) if norm_slot not in booked_slots]
+
+    if request.method == 'POST' and request.user.is_authenticated:
+        time_slot = request.POST.get('time_slot')
+        date_str = request.POST.get('date')
+        if not time_slot or not date_str:
+            messages.error(request, "Please select a date and time slot.")
+        elif time_slot not in available_slots:
+            messages.error(request, "This time slot is no longer available.")
+        else:
+            try:
+                start_str, end_str = time_slot.split('-')
+                start_time = parse_time_flexible(start_str)
+                end_time = parse_time_flexible(end_str)
+                # Double-check slot is still available
+                if Booking.objects.filter(turf=turf, date=date_str, start_time=start_time, end_time=end_time).exists():
+                    messages.error(request, "This time slot has just been booked by someone else.")
+                else:
+                    Booking.objects.create(
+                        turf=turf,
+                        user=request.user,
+                        date=date_str,
+                        start_time=start_time,
+                        end_time=end_time,
+                        status='pending',
+                        payment_status='pending'
+                    )
+                    messages.success(request, "Booking successful! You will be notified once confirmed.")
+                    return redirect(request.path + f"?date={date_str}")
+            except Exception as e:
+                messages.error(request, "Invalid time slot format.")
+
     return render(request, 'players/turf_detail.html', {
         'turf': turf,
         'available_slots': available_slots,
         'selected_date': selected_date,
     })
+
+@login_required
+def my_bookings(request):
+    bookings = Booking.objects.filter(user=request.user).select_related('turf').order_by('-date', '-start_time')
+    return render(request, 'players/my_bookings.html', {'bookings': bookings})

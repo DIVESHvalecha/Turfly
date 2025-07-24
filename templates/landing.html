@@ -12,18 +12,26 @@
               <p class="text-sm md:text-base font-normal">Find and book the perfect turf for your next game or manage your turf bookings with ease.</p>
             </div>
             <div class="flex flex-wrap justify-center gap-3">
-              <a href="#">
-          <button class="h-12 px-5 rounded-full bg-[#1993e5] hover:bg-[#1380cb] text-white font-bold text-sm md:text-base transition">Sign Up as a User</button>
-        </a>
-        <a href="#">
-          <button class="h-12 px-5 rounded-full bg-[#293238] hover:bg-[#3a464d] text-white font-bold text-sm md:text-base transition">Sign Up as a Turf Owner</button>
-        </a>
+              {% if not user.is_authenticated %}
+                <a href="{% url 'account_signup' %}?user_type=player">
+                  <button class="h-12 px-5 rounded-full bg-[#1993e5] hover:bg-[#1380cb] text-white font-bold text-sm md:text-base transition">Sign Up as a User</button>
+                </a>
+                <a href="{% url 'account_signup' %}?user_type=owner">
+                  <button class="h-12 px-5 rounded-full bg-[#293238] hover:bg-[#3a464d] text-white font-bold text-sm md:text-base transition">Sign Up as a Turf Owner</button>
+                </a>
+              {% endif %}
             </div>
             <div class="mt-4">
-        <a href="{% url 'account_login' %}">
-          <button class="h-12 px-6 rounded-full bg-white hover:bg-gray-200 text-[#293238] font-bold text-sm md:text-base transition shadow">Login</button>
-        </a>
-      </div>
+              {% if user.is_authenticated %}
+                <a href="{% url 'usrs:role_redirect' %}">
+                  <button class="h-12 px-6 rounded-full bg-white hover:bg-gray-200 text-[#293238] font-bold text-sm md:text-base transition shadow">Dashboard</button>
+                </a>
+              {% else %}
+                <a href="{% url 'account_login' %}">
+                  <button class="h-12 px-6 rounded-full bg-white hover:bg-gray-200 text-[#293238] font-bold text-sm md:text-base transition shadow">Login</button>
+                </a>
+              {% endif %}
+            </div>
           </div>
         </div>
       </main>
